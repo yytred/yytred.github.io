@@ -1,1 +1,112 @@
-hello
+<!DOCTYPE html>
+<html lang="en">
+<script type="text/javascript" src="vue.js"></script>
+<head>
+    <meta charset="UTF-8">
+    <title>2019.7.22</title>
+    <style>
+        .aClass{
+            color: red;
+        }
+        .bClass{
+            color:blue;
+        }
+        .cClass{
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body>
+<div id="app">
+    <input type="text" v-model="message1"><br>
+    <input type="text" v-model="message2"><br>
+    <input type="text" placeholder="Full Name1" v-model="fullname"><br>
+    <input type="text" placeholder="Full Name2" v-model="fullname1"><br>
+    <input type="text" placeholder="Full Name3" v-model="fullname2"><br>
+    <p>{{message.toUpperCase()}}</p>
+    <p>{{fullname2}}</p>
+<!--    <img v-bind:src="imgUrl">-->
+    <button v-on:click="test(message)">按钮</button>
+</div>
+
+<script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message1: 'a',
+            message2: 'b',
+            message: 'Hello Vue!',
+            fullname1:'a b'
+            // imgUrl:'src/timg1.jpg'
+        },
+        methods:{
+            test() {
+                console.log('message1')
+            }
+        },
+        computed:{
+            fullname(){
+                console.log('fullname()')
+                return this.message1+' '+this.message2
+            },
+            fullname2:{
+                get(){
+                    return this.message1+' '+this.message2
+                },
+                set(value){
+                    const names=value.split(' ')
+                    this.message1=names[0]
+                    this.message2=names[1]
+                }
+            }
+        },
+        watch:{
+            message1:function (value) {
+                console.log('this')
+                this.fullname1=value +''+this.message2
+                
+            }
+                
+        }
+
+        
+    })
+    app.$watch('message2',function (value) {
+        this.fullname1 =this.message1+value
+
+
+    })
+</script>
+
+<div id="color">
+    <p v-if="ok" class="cClass" :class="a">1234</p>
+    <p class="{aclass:isA,bclass：isB}" :class="a">1234</p>
+    <p :style="{color: activeColor}" >12345767</p>
+    <button @click="update">更新</button>
+
+
+</div>
+<script type="text/javascript">
+    new Vue({
+        el: '#color',
+        data: {
+            a: 'aClass',
+            isA:true,
+            isB:false,
+            ok:false,
+            activeColor:'red',
+            fontsize:'20',
+        },
+        methods:{
+            update(){
+                this.a='bClass'
+                this.isA='false'
+                this.isB='true'
+                this.activeColor='green'
+                this.ok=true
+            }
+        }
+    })
+</script>
+</body>
+</html>
